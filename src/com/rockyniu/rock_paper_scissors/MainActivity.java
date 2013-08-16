@@ -8,56 +8,37 @@ package com.rockyniu.rock_paper_scissors;
 
 import java.util.Random;
 
-import com.rockyniu.s01_e15_relativelayout.R;
-
 import android.app.Activity;
-import android.content.res.Resources;
-import android.graphics.Color;
-import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
-import android.widget.CompoundButton;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
-import android.widget.TextView;
+
+import com.rockyniu.s01_e15_relativelayout.R;
 
 public class MainActivity extends Activity {
-	private Random random;
-	private String[] choice;
 	private RadioGroup aRadioGroup, bRadioGroup;
-	private RadioButton a1Button, a2Button, a3Button;
-	private RadioButton b1Button, b2Button, b3Button;
 	private Button okButton;
-	private TextView choiceATextView, choiceBTextView, resultTextView;
-	
-/*	Resources res = getResources();
-	String[] choice = res.getStringArray(R.array.choice);*/
-	
+	private ImageView choiceAImageView, choiceBImageView, resultImageView;
+		
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-		
-		choice = this.getResources().getStringArray(R.array.choice);
-		
+				
 		aRadioGroup = (RadioGroup)findViewById(R.id.aRadioGroupId);
-		a1Button = (RadioButton)findViewById(R.id.a1RadioButtonId);
-		a2Button = (RadioButton)findViewById(R.id.a2RadioButtonId);
-		a3Button = (RadioButton)findViewById(R.id.a3RadioButtonId);
-
 		bRadioGroup = (RadioGroup)findViewById(R.id.bRadioGroupId);
-		b1Button = (RadioButton)findViewById(R.id.b1RadioButtonId);
-		b2Button = (RadioButton)findViewById(R.id.b2RadioButtonId);
-		b3Button = (RadioButton)findViewById(R.id.b3RadioButtonId);
 		
 		okButton =(Button)findViewById(R.id.okButtonId);
-		choiceATextView = (TextView)findViewById(R.id.choiceATextViewId);
-		choiceBTextView = (TextView)findViewById(R.id.choiceBTextViewId);
-		resultTextView = (TextView)findViewById(R.id.resultTextViewId);
+		
+		choiceAImageView = (ImageView)findViewById(R.id.choiceAImageViewId);
+		choiceBImageView = (ImageView)findViewById(R.id.choiceBImageViewId);
+		resultImageView = (ImageView)findViewById(R.id.resultImageViewId);
 		
 		ButtonListener buttonListener = new ButtonListener();
 		okButton.setOnClickListener(buttonListener);
@@ -65,6 +46,9 @@ public class MainActivity extends Activity {
 		RadioGroupListener radioGroupListener = new RadioGroupListener();
 		aRadioGroup.setOnCheckedChangeListener(radioGroupListener);
 		bRadioGroup.setOnCheckedChangeListener(radioGroupListener);
+		
+		int randAInt = RandomCheckRadioGroup (aRadioGroup);
+		int randBint = RandomCheckRadioGroup (bRadioGroup);
 	}
 
 	class ButtonListener implements OnClickListener{
@@ -72,40 +56,66 @@ public class MainActivity extends Activity {
 		@Override
 		public void onClick(View v) {
 			if (v.getId() == R.id.okButtonId){
+				choiceAImageView.setVisibility(View.VISIBLE);
+				choiceBImageView.setVisibility(View.VISIBLE);				
+				resultImageView.setVisibility(View.VISIBLE);
 				int win = Win (aRadioGroup, bRadioGroup);
-				if (win == 1){
-					resultTextView.setText("A");
-				}
-				else if (win == 0){
-					resultTextView.setText("Win-Win");
-				}
-				else if (win == -1){
-					resultTextView.setText("B");
+				switch (win){
+					case 1:
+						resultImageView.setImageResource(R.drawable.a);
+						break;
+					case 0:
+						resultImageView.setImageResource(R.drawable.rps);
+						break;
+					case -1:
+						resultImageView.setImageResource(R.drawable.b);
+						break;
 				}
 			}
 		}
-		
 	}
+	
 	
 	class RadioGroupListener implements OnCheckedChangeListener{
 
 		@Override
 		public void onCheckedChanged(RadioGroup group, int checkedId) {
-			int idx = Id2Index (group);	
-			System.out.println(checkedId +"");
+			
+			choiceAImageView.setVisibility(View.INVISIBLE);
+			choiceBImageView.setVisibility(View.INVISIBLE);				
+			resultImageView.setVisibility(View.INVISIBLE);
+			
+			int idx = Id2Index (group);
+			int imageId = Index2ImageId(idx);
 			if (group.getId() == R.id.aRadioGroupId){
-				choiceATextView.setText(choice[idx]);
+				choiceAImageView.setImageResource(imageId);
 			}
 			else if (group.getId() == R.id.bRadioGroupId){
-				choiceBTextView.setText(choice[idx]);
+				choiceBImageView.setImageResource(imageId);
 			}
 		}
-		
 	}
-//	Button.getBackground().setColorFilter(Color.RED, PorterDuff.Mode.MULTIPLY);
-
+	
+	int Index2ImageId (int idx){
+		int imageId = 0;
+		switch (idx){
+			case 0:
+				imageId = R.drawable.rock;
+				break;
+			case 1:
+				imageId = R.drawable.paper;
+				break;
+			case 2:
+				imageId = R.drawable.scissors;
+				break;
+		}
+		
+		return imageId;
+	}
+	
 	void ChangeBackground (RadioGroup group, int checkedId) {
 		int idx = Id2Index (group);
+		group.setBackgroundColor(0xFFFF0000);
 	}
 	
 	int Win (RadioGroup groupA, RadioGroup groupB) {
@@ -122,7 +132,6 @@ public class MainActivity extends Activity {
 		else if ((dif == -2)||(dif == 1)){
 			win = 1;
 		}
-		System.out.println("win:" + win);
 		return win;
 	}
 	
@@ -130,26 +139,17 @@ public class MainActivity extends Activity {
 		int radioButtonID = group.getCheckedRadioButtonId();
 		View radioButton = group.findViewById(radioButtonID);
 		int idx = group.indexOfChild(radioButton);
-		System.out.println("radioButtonID("+radioButtonID+"):"+idx);
 		return idx;
 	}
-	
-/*	class RadioGroupClickistener implements OnClickListener{
 
-		@Override
-		public void onClick(View v) {
-			RadioGroup group = (RadioGroup) v;
-			if (group.getId() == R.id.aRadioGroupId){
-				choiceATextView.setText("A:"+group.getCheckedRadioButtonId());
-			}
-			else if (group.getId() == R.id.bRadioGroupId){
-				choiceBTextView.setText("B:"+group.getCheckedRadioButtonId());
-			}
-		}
-		
-	}*/
+	int RandomCheckRadioGroup (RadioGroup radioGroup){
+		Random random = new Random();
+		int randInt = random.nextInt(3);
+		RadioButton radioButton = (RadioButton) radioGroup.getChildAt(randInt);
+		radioButton.setChecked(true);
+		return randInt;
+	}
 	
-
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
