@@ -1,6 +1,6 @@
 /**
 * Rocky, Paper, Scissors / 猜拳小游戏
-* @version 0.1, 2013-08-10
+* @version 0.1, 2013-08-15
 * @author RockyNiu
 * @since JDK2.2
 */
