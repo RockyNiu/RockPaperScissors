@@ -4,7 +4,7 @@
 * @author RockyNiu
 * @since JDK2.2
 */
-package com.rockyniu.rock_paper_scissors;
+package com.rockyniu.rockpaperscissors;
 
 import java.util.Random;
 
@@ -18,8 +18,6 @@ import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
-
-import com.rockyniu.s01_e15_relativelayout.R;
 
 public class MainActivity extends Activity {
 	private RadioGroup aRadioGroup, bRadioGroup;
