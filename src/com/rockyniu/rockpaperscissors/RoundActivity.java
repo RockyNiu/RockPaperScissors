@@ -1,8 +1,9 @@
 /**
 * Rocky, Paper, Scissors / 猜拳小游戏
+* @version 0.2, 2014-04-27
 * @version 0.1, 2013-08-15
-* @author RockyNiu
-* @since JDK2.2
+* @author Lei Niu
+* @since Android 4.2.2
 */
 package com.rockyniu.rockpaperscissors;
 
