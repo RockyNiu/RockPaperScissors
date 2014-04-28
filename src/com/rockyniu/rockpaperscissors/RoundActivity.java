@@ -191,11 +191,11 @@ public class RoundActivity extends Activity implements View.OnClickListener {
 	}
 
 	private void enableDisableRaidoGroup(RadioGroup radioGroup, boolean enabled) {
-		radioGroup.setClickable(enabled);
+		radioGroup.setEnabled(enabled);
 		int childCount = radioGroup.getChildCount();
 		for (int i = 0; i < childCount; i++) {
 			View view = radioGroup.getChildAt(i);
-			view.setClickable(enabled);
+			view.setEnabled(enabled);
 		}
 	}
 
