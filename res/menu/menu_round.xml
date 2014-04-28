@@ -17,7 +17,7 @@
             
             <item
                 android:id="@+id/menu_palywithremote"
-                android:icon="@drawable/a_default"
+                android:icon="@drawable/remote_player"
                 android:showAsAction="always"
                 android:title="@string/play_with_remote"/>
             

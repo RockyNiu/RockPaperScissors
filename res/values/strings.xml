@@ -17,6 +17,6 @@
     <string name="error_format">[Error] %s</string>
     <string name="play_with_home">Play with home</string>
     <string name="play_with_computer">Play with computer</string>
-	<string name="play_with_remote">Play with remote</string>
+	<string name="play_with_remote">Play with other</string>
 
 </resources>

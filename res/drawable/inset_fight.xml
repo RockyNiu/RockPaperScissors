@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<inset xmlns:android="http://schemas.android.com/apk/res/android"
+    android:drawable="@drawable/btn_green_matte"
+    android:insetBottom="@dimen/inset_size"
+    android:insetLeft="@dimen/inset_size"
+    android:insetRight="@dimen/inset_size"
+    android:insetTop="@dimen/inset_size" >
+</inset>

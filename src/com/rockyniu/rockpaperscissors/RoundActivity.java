@@ -36,11 +36,13 @@ public class RoundActivity extends Activity implements View.OnClickListener {
 
 	// play type
 	private int playType;
-	private int competitorIcon;
+	private int competitorIconId;
 	private final int PLAY_WITH_HOME = 0;
 	private final int PLAY_WITH_COMPUTER = 1;
+	private final int PLAY_WITH_REMOTE = 2;
 
 	// view information
+	private Menu menu;
 	private ImageView aImageView;
 	private ImageView bImageView;
 	private RadioGroup aRadioGroup;
@@ -102,7 +104,9 @@ public class RoundActivity extends Activity implements View.OnClickListener {
 //		aRadioGroup.setOnCheckedChangeListener(radioGroupChangeListener);
 //		bRadioGroup.setOnCheckedChangeListener(radioGroupChangeListener);
 
-		playType = PLAY_WITH_HOME;
+		playType = PLAY_WITH_COMPUTER;
+		aChoice = Choice.ROCK;
+		bChoice = Choice.ROCK;
 	}
 
 	@Override
@@ -114,21 +118,25 @@ public class RoundActivity extends Activity implements View.OnClickListener {
 	private void setPlayer() {
 		switch (playType) {
 		case PLAY_WITH_HOME:
-			competitorIcon = R.drawable.a_default;
+			competitorIconId = R.drawable.a_default;
 			enableDisableRaidoGroup(aRadioGroup, true);
 			break;
 		case PLAY_WITH_COMPUTER:
-			competitorIcon = R.drawable.computer;
+			competitorIconId = R.drawable.computer;
 			enableDisableRaidoGroup(aRadioGroup, false);
-			randomCheckRadioGroup(aRadioGroup);
+			randomCheckButton(aRadioGroup);
+			break;
+		case PLAY_WITH_REMOTE:
+			competitorIconId = R.drawable.remote_player;
+			enableDisableRaidoGroup(aRadioGroup, false);
+			randomCheckButton(aRadioGroup);
 			break;
 		default:
-			competitorIcon = R.drawable.a_default;
+			competitorIconId = R.drawable.a_default;
 			enableDisableRaidoGroup(aRadioGroup, true);
 		}
-
-		aImageView.setImageResource(competitorIcon);
-		aResultImageView.setImageResource(competitorIcon);
+		aImageView.setImageResource(competitorIconId);
+		aResultImageView.setImageResource(competitorIconId);
 	}
 
 //	class RadioGroupChangeListener implements OnCheckedChangeListener {
@@ -199,18 +207,13 @@ public class RoundActivity extends Activity implements View.OnClickListener {
 		return getChoice(radioGroup);
 	}
 	
-	private int randomCheckRadioGroup(RadioGroup radioGroup) {
-		Random random = new Random();
-		int randInt = random.nextInt(3);
-		RadioButton radioButton = (RadioButton) radioGroup.getChildAt(randInt);
-		radioButton.setChecked(true);
-		return randInt;
-	}
-
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
+		super.onCreateOptionsMenu(menu);
 		getMenuInflater().inflate(R.menu.menu_round, menu);
+		menu.findItem(R.id.choose_player).setIcon(competitorIconId);
+		this.menu = menu;
 		return true;
 	}
 
@@ -219,16 +222,19 @@ public class RoundActivity extends Activity implements View.OnClickListener {
 		switch (item.getItemId()) {
 		case R.id.menu_playwithcomputer:
 			playType = PLAY_WITH_COMPUTER;
-			setPlayer();
-			return true;
+			break;
 		case R.id.menu_playwithhome:
 			playType = PLAY_WITH_HOME;
-			setPlayer();
-			return true;
+			break;
+		case R.id.menu_palywithremote:
+			playType = PLAY_WITH_REMOTE;
+			break;
 		case android.R.id.home:
 			NavUtils.navigateUpFromSameTask(this);
 			return true;
 		}
+		setPlayer();
+		menu.findItem(R.id.choose_player).setIcon(competitorIconId);
 		return super.onOptionsItemSelected(item);
 	}
 
@@ -242,7 +248,7 @@ public class RoundActivity extends Activity implements View.OnClickListener {
 			int win = RoundResult.getResult(aChoice, bChoice);
 			switch (win) {
 			case 1:
-				resultImageView.setImageResource(competitorIcon);
+				resultImageView.setImageResource(competitorIconId);
 				break;
 			case 0:
 				resultImageView.setImageResource(R.drawable.rps);
