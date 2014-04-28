@@ -43,13 +43,14 @@
                     android:id="@+id/a1RadioButtonId"
                     android:layout_width="@dimen/play_choice_size"
                     android:layout_height="@dimen/play_choice_size"
-                    android:button="@drawable/button_rock"/>
+                    android:background="@drawable/button_rock"
+                    android:button="@null"/>
                
                 <RadioButton
                     android:id="@+id/a2RadioButtonId"
                     android:layout_width="@dimen/play_choice_size"
                     android:layout_height="@dimen/play_choice_size"
-                    android:background="@drawable/paper"
+                    android:background="@drawable/button_paper"
                     android:button="@null" />
 
                 
@@ -57,7 +58,7 @@
                     android:id="@+id/a3RadioButtonId"
                     android:layout_width="@dimen/play_choice_size"
                     android:layout_height="@dimen/play_choice_size"
-                    android:background="@drawable/scissors"
+                    android:background="@drawable/button_scissors"
                     android:button="@null" />
             </RadioGroup>
         </RelativeLayout>
@@ -89,7 +90,7 @@
                     android:id="@+id/b1RadioButtonId"
                     android:layout_width="@dimen/play_choice_size"
                     android:layout_height="@dimen/play_choice_size"
-                    android:background="@drawable/rock"
+                    android:background="@drawable/button_rock"
                     android:button="@null" />
 
                 
@@ -97,7 +98,7 @@
                     android:id="@+id/b2RadioButtonId"
                     android:layout_width="@dimen/play_choice_size"
                     android:layout_height="@dimen/play_choice_size"
-                    android:background="@drawable/paper"
+                    android:background="@drawable/button_paper"
                     android:button="@null" />
 
                 
@@ -105,7 +106,7 @@
                     android:id="@+id/b3RadioButtonId"
                     android:layout_width="@dimen/play_choice_size"
                     android:layout_height="@dimen/play_choice_size"
-                    android:background="@drawable/scissors"
+                    android:background="@drawable/button_scissors"
                     android:button="@null" />
             </RadioGroup>
         </RelativeLayout>
@@ -118,7 +119,7 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
         android:layout_below="@id/mainLinearLayoutId"
-        android:text="@string/ok" />
+        android:text="@string/fight" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -143,16 +144,17 @@
                 android:orientation="horizontal" >
 
                 <ImageView
-                    android:id="@id/aImageViewId"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
+                    android:id="@+id/aImageViewId_result"
+                    android:layout_width="@dimen/play_image_size"
+                    android:layout_height="@dimen/play_image_size"
+                    android:layout_gravity="center_vertical"
                     android:scaleType="centerInside"
                     android:src="@drawable/a_default" />
 
                 <ImageView
                     android:id="@+id/choiceAImageViewId"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
+                    android:layout_width="@dimen/play_choice_size"
+                    android:layout_height="@dimen/play_choice_size"
                     android:scaleType="centerInside"
                     android:src="@drawable/a_default"
                     android:visibility="invisible" />
@@ -167,16 +169,17 @@
                 android:orientation="horizontal" >
 
                 <ImageView
-                    android:id="@id/bImageViewId"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
+                    android:id="@+id/bImageViewId_result"
+                    android:layout_width="@dimen/play_image_size"
+                    android:layout_height="@dimen/play_image_size"
+                    android:layout_gravity="center_vertical"
                     android:scaleType="centerInside"
                     android:src="@drawable/b_default" />
 
                 <ImageView
                     android:id="@+id/choiceBImageViewId"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
+                    android:layout_width="@dimen/play_choice_size"
+                    android:layout_height="@dimen/play_choice_size"
                     android:scaleType="centerInside"
                     android:src="@drawable/b_default"
                     android:visibility="invisible" />
@@ -195,7 +198,8 @@
                 android:layout_height="wrap_content"
                 android:background="#bbbbbb"
                 android:gravity="center_horizontal"
-                android:text="@string/result" />
+                android:text="@string/result" 
+                android:textColor="@color/white"/>
 
             <ImageView
                 android:id="@+id/resultImageViewId"

@@ -11,7 +11,9 @@ import java.util.Random;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.NavUtils;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -26,10 +28,20 @@ public class RoundActivity extends Activity {
 	private String userId;
 	private String userName;
 	
+	// play type
+	private int playType;
+	private int competitorIcon;
+	private final int PLAY_WITH_HOME = 0;
+	private final int PLAY_WITH_COMPUTER = 1; 
+	
 	// view information
+	private ImageView aImageView;
+	private ImageView bImageView;
 	private RadioGroup aRadioGroup;
 	private RadioGroup bRadioGroup;
 	private Button playButton;
+	private ImageView aResultImageView;
+	private ImageView bResultImageView;
 	private ImageView choiceAImageView;
 	private ImageView choiceBImageView;
 	private ImageView resultImageView;
@@ -45,11 +57,17 @@ public class RoundActivity extends Activity {
 		userName = bundle.getString("com.rockyniu.rockpaperscissors.username");
 		this.setTitle(userName);
 		
+		aImageView = (ImageView)findViewById(R.id.aImageViewId);
+		bImageView = (ImageView)findViewById(R.id.bImageViewId);
 		aRadioGroup = (RadioGroup)findViewById(R.id.aRadioGroupId);
 		bRadioGroup = (RadioGroup)findViewById(R.id.bRadioGroupId);
 		
 		playButton =(Button)findViewById(R.id.okButtonId);
 		
+		aImageView = (ImageView)findViewById(R.id.aImageViewId);
+		bImageView = (ImageView)findViewById(R.id.bImageViewId);
+		aResultImageView = (ImageView)findViewById(R.id.aImageViewId_result);
+		bResultImageView = (ImageView)findViewById(R.id.bImageViewId_result);
 		choiceAImageView = (ImageView)findViewById(R.id.choiceAImageViewId);
 		choiceBImageView = (ImageView)findViewById(R.id.choiceBImageViewId);
 		resultImageView = (ImageView)findViewById(R.id.resultImageViewId);
@@ -61,10 +79,33 @@ public class RoundActivity extends Activity {
 		aRadioGroup.setOnCheckedChangeListener(radioGroupListener);
 		bRadioGroup.setOnCheckedChangeListener(radioGroupListener);
 		
+		playType = PLAY_WITH_HOME;
 		int randAInt = RandomCheckRadioGroup (aRadioGroup);
 		int randBint = RandomCheckRadioGroup (bRadioGroup);
 	}
 
+	@Override
+	protected void onResume() {
+		super.onResume();
+		setPlayerIcon();
+	}
+	
+	private void setPlayerIcon(){
+		switch (playType){
+		case PLAY_WITH_HOME:
+			competitorIcon = R.drawable.a_default;
+			break;
+		case PLAY_WITH_COMPUTER:
+			competitorIcon = R.drawable.computer;
+			break;
+		default:
+			competitorIcon = R.drawable.a_default;
+		}
+		
+		aImageView.setImageResource(competitorIcon);
+		aResultImageView.setImageResource(competitorIcon);
+	}
+	
 	class ButtonListener implements OnClickListener{
 
 		@Override
@@ -171,4 +212,17 @@ public class RoundActivity extends Activity {
 		return true;
 	}
 
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case R.id.menu_playwithcomputer:
+			playType = PLAY_WITH_COMPUTER;
+			setPlayerIcon();
+			return true;
+		case android.R.id.home:
+			NavUtils.navigateUpFromSameTask(this);
+			return true;
+		}
+		return super.onOptionsItemSelected(item);
+	}
 }

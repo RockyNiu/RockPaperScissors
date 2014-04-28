@@ -4,7 +4,8 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:paddingLeft="@dimen/activity_vertical_margin"
-    android:paddingRight="@dimen/activity_vertical_margin" >
+    android:paddingRight="@dimen/activity_vertical_margin"
+    tools:context=".MainActivity">
 
     <com.google.android.gms.common.SignInButton
         android:id="@+id/add_account_button"
