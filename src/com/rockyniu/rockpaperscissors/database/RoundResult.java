@@ -1,10 +1,13 @@
 package com.rockyniu.rockpaperscissors.database;
 
-class RoundResult {
+public class RoundResult {
 	static final int RESULT_ERROR = -100;
 
 	public enum Choice {
-		ROCK(1), PAPER(2), SCISSORS(3);
+		ROCK(0), 
+		PAPER(1), 
+		SCISSORS(2),
+		ERROR(-1);
 		private final int choice;
 
 		private Choice(int choice) {
@@ -14,6 +17,19 @@ class RoundResult {
 		public int getStatus() {
 			return this.choice;
 		}
+		
+		public static Choice setChoice(int index){
+			switch (index){
+			case 0: 
+				return Choice.ROCK;
+			case 1:
+				return Choice.PAPER;
+			case 2:
+				return Choice.SCISSORS;
+			default:
+				return Choice.ERROR;
+			}
+		}		
 	}
 
 	/**
@@ -23,7 +39,7 @@ class RoundResult {
 	 * @return 0: draw; 1: c1 win; -1: c1 lose, or RESULT_ERROR.
 	 */
 	public static int getResult(Choice c1, Choice c2) {
-		if (!(c2.equals(Choice.ROCK) && c2.equals(Choice.PAPER) && c2
+		if (!(c2.equals(Choice.ROCK) || c2.equals(Choice.PAPER) || c2
 				.equals(Choice.SCISSORS))) {
 			return RESULT_ERROR;
 		}

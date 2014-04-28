@@ -3,25 +3,29 @@
     tools:context="com.rockyniu.rockpaperscissors.LoginActivity" >
 
     <item
-        android:id="@+id/action_settings"
+        android:id="@+id/choose_player"
+        android:icon="@android:drawable/ic_menu_more"
         android:showAsAction="always"
-        android:title="@string/action_settings">
+        android:title="@string/choose_player">
         <menu>
-            <item
-                android:id="@+id/menu_playwithhome"
-                android:icon="@drawable/a_default"
-                android:showAsAction="always"
-                android:title="@string/play_with_home"/>
+            
             <item
                 android:id="@+id/menu_playwithcomputer"
                 android:icon="@drawable/computer"
                 android:showAsAction="always"
                 android:title="@string/play_with_computer"/>
+            
             <item
                 android:id="@+id/menu_palywithremote"
                 android:icon="@drawable/a_default"
                 android:showAsAction="always"
                 android:title="@string/play_with_remote"/>
+            
+            <item
+                android:id="@+id/menu_playwithhome"
+                android:icon="@drawable/a_default"
+                android:showAsAction="always"
+                android:title="@string/play_with_home"/>
         </menu>
     </item>
 
