@@ -1,11 +1,12 @@
 package com.rockyniu.rockpaperscissors.database;
 
 public class Round {
-	private String resultUuid;
+	private String resultId;
 	private int result;
 	private String userId;
 	private int selfChoice;
-	private String competitorUuid;
+	private String competitorId;
+	private String competitorName;
 	private int competitorChoice;
 	private Long selfPlayTime;
 	private Long competitorPlayTime;
@@ -15,13 +16,13 @@ public class Round {
 	 * @return the resultUuid
 	 */
 	public String getId() {
-		return resultUuid;
+		return resultId;
 	}
 	/**
 	 * @param resultUuid the resultUuid to set
 	 */
 	public void setId(String resultUuid) {
-		this.resultUuid = resultUuid;
+		this.resultId = resultUuid;
 	}
 	/**
 	 * @return the result
@@ -63,13 +64,25 @@ public class Round {
 	 * @return the competitorUuid
 	 */
 	public String getCompetitorId() {
-		return competitorUuid;
+		return competitorId;
 	}
 	/**
 	 * @param competitorUuid the competitorUuid to set
 	 */
 	public void setCompetitorId(String competitorUuid) {
-		this.competitorUuid = competitorUuid;
+		this.competitorId = competitorUuid;
+	}
+	/**
+	 * @return the competitorName
+	 */
+	public String getCompetitorName() {
+		return competitorName;
+	}
+	/**
+	 * @param competitorName the competitorName to set
+	 */
+	public void setCompetitorName(String competitorName) {
+		this.competitorName = competitorName;
 	}
 	/**
 	 * @return the competitorChoice

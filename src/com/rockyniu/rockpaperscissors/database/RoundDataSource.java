@@ -17,6 +17,7 @@ public class RoundDataSource {
 			RpsSQLiteHelper.COLUMN_USERID, 
 			RpsSQLiteHelper.COLUMN_SELFCHOICE,
 			RpsSQLiteHelper.COLUMN_COMPETITORID, 
+			RpsSQLiteHelper.COLUMN_COMPETITORNAME,
 			RpsSQLiteHelper.COLUMN_COMPETITORCHOICE,
 			RpsSQLiteHelper.COLUMN_SELFPLAYTIME,
 			RpsSQLiteHelper.COLUMN_COMPETITORPLAYTIME,
@@ -82,6 +83,7 @@ public class RoundDataSource {
 		values.put(RpsSQLiteHelper.COLUMN_USERID, round.getUserId());
 		values.put(RpsSQLiteHelper.COLUMN_SELFCHOICE, round.getSelfChoice());
 		values.put(RpsSQLiteHelper.COLUMN_COMPETITORID, round.getCompetitorId());
+		values.put(RpsSQLiteHelper.COLUMN_COMPETITORNAME, round.getCompetitorName());
 		values.put(RpsSQLiteHelper.COLUMN_COMPETITORCHOICE, round.getCompetitorChoice());
 		values.put(RpsSQLiteHelper.COLUMN_SELFPLAYTIME, round.getSelfPlayTime());
 		values.put(RpsSQLiteHelper.COLUMN_COMPETITORPLAYTIME, round.getCompetitorPlayTime());
@@ -139,6 +141,7 @@ public class RoundDataSource {
 		values.put(RpsSQLiteHelper.COLUMN_USERID, round.getUserId());
 		values.put(RpsSQLiteHelper.COLUMN_SELFCHOICE, round.getSelfChoice());
 		values.put(RpsSQLiteHelper.COLUMN_COMPETITORID, round.getCompetitorId());
+		values.put(RpsSQLiteHelper.COLUMN_COMPETITORNAME, round.getCompetitorName());
 		values.put(RpsSQLiteHelper.COLUMN_COMPETITORCHOICE, round.getCompetitorChoice());
 		values.put(RpsSQLiteHelper.COLUMN_SELFPLAYTIME, round.getSelfPlayTime());
 		values.put(RpsSQLiteHelper.COLUMN_COMPETITORPLAYTIME, round.getCompetitorPlayTime());
@@ -163,6 +166,8 @@ public class RoundDataSource {
 				.getColumnIndex(RpsSQLiteHelper.COLUMN_SELFCHOICE)));
 		round.setCompetitorId(cursor.getString(cursor
 				.getColumnIndex(RpsSQLiteHelper.COLUMN_COMPETITORID)));
+		round.setCompetitorName(cursor.getString(cursor
+				.getColumnIndex(RpsSQLiteHelper.COLUMN_COMPETITORNAME)));
 		round.setCompetitorChoice(cursor.getInt(cursor
 				.getColumnIndex(RpsSQLiteHelper.COLUMN_COMPETITORCHOICE)));
 		round.setSelfPlayTime(cursor.getLong(cursor

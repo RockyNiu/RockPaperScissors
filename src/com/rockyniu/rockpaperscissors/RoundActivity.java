@@ -7,8 +7,14 @@
  */
 package com.rockyniu.rockpaperscissors;
 
+import java.util.Calendar;
 import java.util.Random;
+import java.util.UUID;
 
+import com.google.android.gms.games.Games;
+import com.google.example.games.basegameutils.BaseGameActivity;
+import com.rockyniu.rockpaperscissors.database.Round;
+import com.rockyniu.rockpaperscissors.database.RoundDataSource;
 import com.rockyniu.rockpaperscissors.database.RoundResult;
 import com.rockyniu.rockpaperscissors.database.RoundResult.Choice;
 
@@ -26,14 +32,28 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
 
-public class RoundActivity extends Activity implements View.OnClickListener {
+public class RoundActivity extends BaseGameActivity implements View.OnClickListener {
 
+	private RoundDataSource roundDataSource;
+	
 	private final int CHOICE_ERROR = -1;
 
 	// user information
 	private String userId;
 	private String userName;
-
+	
+	// competitor information
+	private String competitorId;
+	private String competitorName;
+	private final String COMPETITOR_DEFAULT_ID = "001";
+	private final String COMPETITOR_DEFAULT_NAME = "competitor";
+	private final String COMPUTER_ID = "007";
+	private final String COMPUTER_NAME = "computer";
+	
+	// play time
+	private Long selfPlayTime;
+	private Long competitorPlayTime;
+	
 	// play type
 	private int playType;
 	private int competitorIconId;
@@ -63,9 +83,13 @@ public class RoundActivity extends Activity implements View.OnClickListener {
 	// players' choices
 	private Choice aChoice;
 	private Choice bChoice;
+	private int win;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		// set requested clients (game and cloud save)
+		setRequestedClients(BaseGameActivity.CLIENT_GAMES | BaseGameActivity.CLIENT_APPSTATE);
+		
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_round);
 
@@ -104,9 +128,14 @@ public class RoundActivity extends Activity implements View.OnClickListener {
 //		aRadioGroup.setOnCheckedChangeListener(radioGroupChangeListener);
 //		bRadioGroup.setOnCheckedChangeListener(radioGroupChangeListener);
 
+		// default values
 		playType = PLAY_WITH_COMPUTER;
+		competitorId = COMPUTER_ID;
+		competitorName = COMPUTER_NAME;
 		aChoice = Choice.ROCK;
 		bChoice = Choice.ROCK;
+		
+		roundDataSource = new RoundDataSource(RoundActivity.this);
 	}
 
 	@Override
@@ -118,15 +147,21 @@ public class RoundActivity extends Activity implements View.OnClickListener {
 	private void setPlayer() {
 		switch (playType) {
 		case PLAY_WITH_HOME:
+			competitorId = COMPETITOR_DEFAULT_ID;
+			competitorName = COMPETITOR_DEFAULT_NAME;
 			competitorIconId = R.drawable.a_default;
 			enableDisableRaidoGroup(aRadioGroup, true);
 			break;
 		case PLAY_WITH_COMPUTER:
+			competitorId = COMPUTER_ID;
+			competitorName = COMPUTER_NAME;
 			competitorIconId = R.drawable.computer;
 			enableDisableRaidoGroup(aRadioGroup, false);
 			randomCheckButton(aRadioGroup);
 			break;
 		case PLAY_WITH_REMOTE:
+			competitorId = COMPETITOR_DEFAULT_ID;
+			competitorName = COMPETITOR_DEFAULT_NAME;
 			competitorIconId = R.drawable.remote_player;
 			enableDisableRaidoGroup(aRadioGroup, false);
 			randomCheckButton(aRadioGroup);
@@ -204,6 +239,13 @@ public class RoundActivity extends Activity implements View.OnClickListener {
 		int randInt = random.nextInt(3);
 		RadioButton radioButton = (RadioButton) radioGroup.getChildAt(randInt);
 		radioButton.setChecked(true);
+		
+		if(playType == PLAY_WITH_COMPUTER){
+			competitorPlayTime = Calendar.getInstance().getTimeInMillis();
+		} else if (playType == PLAY_WITH_REMOTE){
+			// temp setting for remote player
+			competitorPlayTime = Calendar.getInstance().getTimeInMillis();
+		}
 		return getChoice(radioGroup);
 	}
 	
@@ -242,10 +284,13 @@ public class RoundActivity extends Activity implements View.OnClickListener {
 	public void onClick(View view) {
 		int id = view.getId();
 		if (id == R.id.okButtonId) {
+			
+			selfPlayTime = Calendar.getInstance().getTimeInMillis();
+			
 			choiceAImageView.setVisibility(View.VISIBLE);
 			choiceBImageView.setVisibility(View.VISIBLE);
 			resultImageView.setVisibility(View.VISIBLE);
-			int win = RoundResult.getResult(aChoice, bChoice);
+			win = RoundResult.getResult(aChoice, bChoice);
 			switch (win) {
 			case 1:
 				resultImageView.setImageResource(competitorIconId);
@@ -257,9 +302,14 @@ public class RoundActivity extends Activity implements View.OnClickListener {
 				resultImageView.setImageResource(R.drawable.b_default);
 				break;
 			}
+			insertNewRound();
 		} else if (id == R.id.a1RadioButtonId || id == R.id.a2RadioButtonId
 				|| id == R.id.a3RadioButtonId) {
 
+			if(playType == PLAY_WITH_HOME){
+				competitorPlayTime = Calendar.getInstance().getTimeInMillis();
+			}
+			
 			choiceAImageView.setVisibility(View.INVISIBLE);
 			choiceBImageView.setVisibility(View.INVISIBLE);
 			resultImageView.setVisibility(View.INVISIBLE);
@@ -278,6 +328,7 @@ public class RoundActivity extends Activity implements View.OnClickListener {
 				choiceAImageView.setImageResource(choice2ImageId(aChoice));
 				break;
 			}
+			
 		} else if (id == R.id.b1RadioButtonId || id == R.id.b2RadioButtonId
 				|| id == R.id.b3RadioButtonId) {
 			choiceAImageView.setVisibility(View.INVISIBLE);
@@ -303,5 +354,37 @@ public class RoundActivity extends Activity implements View.OnClickListener {
 				choiceAImageView.setImageResource(choice2ImageId(aChoice));
 			}
 		}
+	}
+
+	private void insertNewRound(){
+		Round newRound = new Round();
+		newRound.setId(UUID.randomUUID().toString());
+		newRound.setResult(win);
+		newRound.setUserId(userId);
+		newRound.setSelfChoice(bChoice.getInt());
+		newRound.setCompetitorId(competitorId);
+		newRound.setCompetitorName(competitorName);
+		newRound.setCompetitorChoice(bChoice.getInt());
+		newRound.setSelfPlayTime(selfPlayTime);
+		newRound.setCompetitorPlayTime(competitorPlayTime);
+		newRound.setDeleted(false);
+		newRound.setModifiedTime(Calendar.getInstance().getTimeInMillis());
+		boolean successful = roundDataSource.insertRoundWithId(newRound);
+		if (!successful){
+			// do some thing here if fails to insert
+		}
+	}
+	
+	
+	@Override
+	public void onSignInFailed() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onSignInSucceeded() {
+		// TODO Auto-generated method stub
+		
 	}
 }

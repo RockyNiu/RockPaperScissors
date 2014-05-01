@@ -14,7 +14,7 @@ public class RoundResult {
 			this.choice = choice;
 		}
 
-		public int getStatus() {
+		public int getInt() {
 			return this.choice;
 		}
 		

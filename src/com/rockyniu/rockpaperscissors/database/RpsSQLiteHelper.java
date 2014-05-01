@@ -20,6 +20,7 @@ public class RpsSQLiteHelper extends SQLiteOpenHelper {
 	public static final String COLUMN_USERID = "userid";
 	public static final String COLUMN_SELFCHOICE = "selfChoice";
 	public static final String COLUMN_COMPETITORID = "competitorId";
+	public static final String COLUMN_COMPETITORNAME = "competitorNAME";
 	public static final String COLUMN_COMPETITORCHOICE = "competitorChoice";
 	public static final String COLUMN_SELFPLAYTIME = "selfPlayTime";
 	public static final String COLUMN_COMPETITORPLAYTIME = "competitorPlayTime";
@@ -43,6 +44,7 @@ public class RpsSQLiteHelper extends SQLiteOpenHelper {
 			+ COLUMN_USERID + " text not null, " 
 			+ COLUMN_SELFCHOICE + " integer not null default 0, " 
 			+ COLUMN_COMPETITORID + " text not null, "
+			+ COLUMN_COMPETITORNAME + " text not null, "
 			+ COLUMN_COMPETITORCHOICE + " integer not null default 0, " 
 			+ COLUMN_SELFPLAYTIME + " integer not null default 0, " 
 			+ COLUMN_COMPETITORPLAYTIME + " integer not null default 0, " 
